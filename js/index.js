@@ -1,4 +1,25 @@
 
+const SETTINGS = {
+  ID: 'dcfeajpcanlajcbchpppnmgjhcmjneig',
+  PLAYER_SIZE: 32,
+  PLAYER_WALK_SPEED: 5,
+  PLAYER_MAX_GRAVITY: 8,
+  GUN_DELAY: 10,
+  JUMP_LIMIT: 2,
+  JUMP_FORCE: 30,
+  BULLET_SIZE: 10,
+  BULLET_SPEED: 15,
+  BALLOON_SIZE: 32,
+  BALLOON_SPEED: 1,
+  GRAVITY_ADDITION: 2,
+  FLOOR_LIMIT: 50,
+  FLOOR_FLOAT_POWER: 2,
+  FLOOR_SINK_LIGHT: 1.5,
+  FLOOR_SINK_MEDIUM: 1.5,
+  FLOOR_SINK_HEAVY: 1.5,
+  SCORE_ADDITION: 100
+}
+
 class Updatable {
   constructor () {
     this.lastRequestAnimationFrame = window.requestAnimationFrame(this.update.bind(this))
@@ -50,7 +71,7 @@ class Substance extends Updatable {
 
 class Player extends Substance {
   constructor (game, x, y) {
-    super(game, x, y, 32)
+    super(game, x, y, SETTINGS.PLAYER_SIZE)
     Object.assign(this, {
       element: this.appendDivToGame('player'),
       forceX: 0,
@@ -76,7 +97,7 @@ class Player extends Substance {
     this.x += this.forceX
     this.forceX = 0
     this.y += this.forceY
-    this.forceY = Math.min(this.forceY + 2, 8)
+    this.forceY = Math.min(this.forceY + SETTINGS.GRAVITY_ADDITION, SETTINGS.PLAYER_MAX_GRAVITY)
   }
   updateStyle () {
     this.element.classList[this.forceX !== 0 ? 'add' : 'remove']('walk')
@@ -87,19 +108,18 @@ class Player extends Substance {
   }
   gun () {
     if (this.gunDelay) return
-    this.gunDelay = 10
+    this.gunDelay = SETTINGS.GUN_DELAY
     new Bullet(this.game, this.x + this.direction * 10, this.y + 20, this.direction)
   }
   jump () {
-    if (this.jumpCount < 2 && this.forceY >= 0) {
+    if (this.jumpCount < SETTINGS.JUMP_LIMIT && this.forceY >= 0) {
       this.jumpCount++
-      this.forceY = -30
+      this.forceY = -SETTINGS.JUMP_FORCE
     }
   }
   walk (add) {
     this.direction = (add ? 1 : -1)
-    const speed = 5
-    this.forceX = this.direction * speed
+    this.forceX = this.direction * SETTINGS.PLAYER_WALK_SPEED
   }
   landingBottom () {
     if ((this.y + this.size - 10) >= (window.scrollY + window.innerHeight)) {
@@ -124,7 +144,7 @@ class Player extends Substance {
 
 class Balloon extends Substance {
   constructor (game, x, y) {
-    super(game, x, y, 32)
+    super(game, x, y, SETTINGS.BALLOON_SIZE)
     Object.assign(this, {
       element: this.appendDivToGame('balloon')
     })
@@ -140,7 +160,7 @@ class Balloon extends Substance {
     }
   }
   updatePysics () {
-    this.y -= 1
+    this.y -= SETTINGS.BALLOON_SPEED
   }
   initializeStyle () {
     this.element.style.left = `${this.x}px`
@@ -157,7 +177,7 @@ class Balloon extends Substance {
 
 class Bullet extends Substance {
   constructor (game, x, y, direction) {
-    super(game, x, y, 10)
+    super(game, x, y, SETTINGS.BULLET_SIZE)
     Object.assign(this, {
       element: this.appendDivToGame('bullet'),
       direction
@@ -172,7 +192,7 @@ class Bullet extends Substance {
     if (this.outOfScreen) this.destroy()
   }
   updatePysics () {
-    this.x += 15 * this.direction
+    this.x += SETTINGS.BULLET_SPEED * this.direction
   }
   initializeStyle () {
     if (this.direction === -1) this.element.classList.add('negative')
@@ -213,7 +233,7 @@ class Floor extends Updatable {
   update () {
     super.update()
     if (!this.landing && this.relativeY > 0) {
-      this.relativeY -= 2
+      this.relativeY -= SETTINGS.FLOOR_FLOAT_POWER
     }
     this.element.style.left = `${this.relativeX}px`
     this.element.style.top = `${this.relativeY}px`
@@ -236,9 +256,9 @@ class Floor extends Updatable {
   }
   get weight () {
     const w = this.width * this.height
-    if (w < 10000) return 1.5
-    if (w < 100000) return 1
-    return 0.5
+    if (w < 10000) return SETTINGS.FLOOR_SINK_LIGHT
+    if (w < 100000) return SETTINGS.FLOOR_SINK_MEDIUM
+    return SETTINGS.FLOOR_SINK_HEAVY
   }
 }
 
@@ -317,7 +337,7 @@ class Game extends Updatable {
       if ((rect.width * rect.height) === 0 || style.display === 'none' || style.position === 'absolute') return false
       if (['IMG', 'H1', 'H2', 'H3'].includes(v.tagName)) return true
       return !style.background.startsWith('rgba(0, 0, 0, 0)') || !style.border.startsWith('0px')
-    }).filter((_, i) => i < 50).map(element => new Floor(element))
+    }).filter((_, i) => i < SETTINGS.FLOOR_LIMIT).map(element => new Floor(element))
   }
   controlPlayer () {
     if (this.controller.GUN) this.player.gun()
@@ -331,7 +351,7 @@ class Game extends Updatable {
     new Balloon(this, Math.round(Math.random() * (window.innerWidth - 80)) + 40, window.scrollY + window.innerHeight - 40)
   }
   addScore () {
-    this.score += 100
+    this.score += SETTINGS.SCORE_ADDITION
     this.updateScoreBoard()
   }
   updateScoreBoard () {
@@ -367,7 +387,7 @@ class Game extends Updatable {
     this.scoreBoard.append(exit)
   }
   get shareLink () {
-    const url = 'https://chrome.google.com/webstore/detail/dcfeajpcanlajcbchpppnmgjhcmjneig'
+    const url = `https://chrome.google.com/webstore/detail/${SETTINGS.ID}`
     const text = `I played Shooter on HTML (Score: ${this.score} Stage URL: ${location.href})`
     return `http://twitter.com/share?url=${url}&text=${text}`
   }
