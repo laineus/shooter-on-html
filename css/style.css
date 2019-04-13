@@ -1,0 +1,86 @@
+#stgOnHtml {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+}
+#stgOnHtml * {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  box-sizing: border-box;
+  line-height: 1.5;
+}
+#stgOnHtml .player {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/img/wait.gif');
+  background-position: center center;
+}
+#stgOnHtml .player.walk {
+  background-image: url('chrome-extension://__MSG_@@extension_id__/img/walk.gif');
+}
+#stgOnHtml .player.jump {
+  background-image: url('chrome-extension://__MSG_@@extension_id__/img/jump.gif');
+}
+#stgOnHtml .player.left {
+  transform: scaleX(-1);
+}
+#stgOnHtml .bullet {
+  position: absolute;
+  width: 26px;
+  height: 2px;
+  background: linear-gradient(to right, rgba(50, 50, 50, 0), rgba(50, 50, 50, 1));
+}
+#stgOnHtml .bullet.negative {
+  background: linear-gradient(to left, rgba(50, 50, 50, 0), rgba(50, 50, 50, 1));
+}
+#stgOnHtml .balloon {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/img/balloon.gif');
+  background-position: center center;
+}
+#stgOnHtml .balloon.brust {
+  animation: brust 0.1s steps(2) 1;
+  background-image: none;
+}
+@keyframes brust {
+  0% { background-image: url('chrome-extension://__MSG_@@extension_id__/img/balloon_brust1.gif'); }
+  50% { background-image: url('chrome-extension://__MSG_@@extension_id__/img/balloon_brust1.gif'); }
+  51% { background-image: url('chrome-extension://__MSG_@@extension_id__/img/balloon_brust2.gif'); }
+  100% { background-image: url('chrome-extension://__MSG_@@extension_id__/img/balloon_brust2.gif'); }
+}
+.collides {
+  border: 1px dashed !important;
+}
+#stgOnHtml .scoreBoard {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 10px 15px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #FFF;
+  z-index: 20000;
+  transition: 0.5s;
+}
+#stgOnHtml .scoreBoard.result {
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 20px 50px;
+  border-radius: 0;
+}
+#stgOnHtml .scoreBoard a,
+#stgOnHtml .scoreBoard span {
+  font-size: 12px;
+  font-weight: normal;
+  color: #FFF;
+}

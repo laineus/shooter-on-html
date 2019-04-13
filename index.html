@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="index.js"></script>
+</head>
+<body>
+
+<div class="block" style="left: 50px; top: 550px;"></div>
+<div class="block" style="left: 100px; top: 450px;"></div>
+<div class="block" style="left: 300px; top: 300px;"></div>
+<div class="block" style="left: 500px; top: 500px;"></div>
+<div class="block" style="left: 200px; top: 800px;"></div>
+
+<style>
+.block {
+  position: absolute;
+  width: 200px;
+  height: 50px;
+  background: #555;
+}
+</style>
+
+<style>
+#stgOnHtml .player {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background-image: url('wait.gif');
+  background-position: center center;
+  z-index: 10000;
+}
+#stgOnHtml .player.walk {
+  background-image: url('walk.gif');
+}
+#stgOnHtml .player.jump {
+  background-image: url('jump.gif');
+}
+#stgOnHtml .player.left {
+  transform: scaleX(-1);
+}
+#stgOnHtml .bullet {
+  position: absolute;
+  width: 26px;
+  height: 2px;
+  background: linear-gradient(to right, rgba(50, 50, 50, 0), rgba(50, 50, 50, 1));
+}
+#stgOnHtml .bullet.negative {
+  background: linear-gradient(to left, rgba(50, 50, 50, 0), rgba(50, 50, 50, 1));
+}
+#stgOnHtml .balloon {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background-image: url('balloon.gif');
+  background-position: center center;
+  z-index: 10000;
+}
+#stgOnHtml .balloon.brust {
+  animation: brust 0.1s steps(2) 1;
+  background-image: none;
+}
+@keyframes brust {
+  0% { background-image: url('balloon_brust1.gif'); }
+  50% { background-image: url('balloon_brust1.gif'); }
+  51% { background-image: url('balloon_brust2.gif'); }
+  100% { background-image: url('balloon_brust2.gif'); }
+}
+.collides {
+  outline: 1px dashed #3CF;
+  animation: collision 0.5s ease infinite alternate;
+}
+@keyframes collision {
+  0% { outline-color: rgba(255, 180, 0, 1); }
+  100% { outline-color: rgba(255, 180, 0, 0.5); }
+}
+#stgOnHtml .scoreBoard {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 10px 15px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #FFF;
+}
+#stgOnHtml .scoreBoard a {
+  font-size: 12px;
+  font-weight: normal;
+  color: #FFF;
+}
+</style>
+</body>
+</html>
