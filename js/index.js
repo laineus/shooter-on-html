@@ -234,6 +234,9 @@ class Floor extends Updatable {
     super.update()
     if (!this.landing && this.relativeY > 0) {
       this.relativeY -= SETTINGS.FLOOR_FLOAT_POWER
+      if (this.relativeY <= 0) {
+        this.element.classList.remove('landing')
+      }
     }
     this.element.style.left = `${this.relativeX}px`
     this.element.style.top = `${this.relativeY}px`
@@ -245,6 +248,7 @@ class Floor extends Updatable {
   }
   land (substance) {
     this.landing = true
+    this.element.classList.add('landing')
     this.relativeY += this.weight
     substance.y += this.weight
   }
