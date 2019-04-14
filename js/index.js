@@ -1,6 +1,6 @@
 
 const SETTINGS = {
-  ID: 'dcfeajpcanlajcbchpppnmgjhcmjneig',
+  ID: 'lmlagkoehhjjeinchjdlhdnddlnnplnh',
   PLAYER_SIZE: 32,
   PLAYER_WALK_SPEED: 5,
   PLAYER_MAX_GRAVITY: 8,
