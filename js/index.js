@@ -275,9 +275,8 @@ class Controller {
     this.keys.forEach(k  => {
       this[k.name] = false
     })
-    this.avalilableKeys = this.keys.map(k => k.code)
-    document.onkeydown = e => this.onKeyUpdate(e, true)
-    document.onkeyup = e => this.onKeyUpdate(e, false)
+    window.addEventListener('keydown', e => this.onKeyUpdate(e, true), true)
+    window.addEventListener('keyup', e => this.onKeyUpdate(e, false), true)
   }
   onKeyUpdate (e, bool) {
     const key = this.keys.find(k => k.code === e.keyCode)
